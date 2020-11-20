@@ -1,0 +1,35 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>Welcome and Choose a Course</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Courses List</h1>
+</header>
+<main>
+
+    <form th:method="POST" th:action="@{/listCourses}">
+        <ul>
+            <li th:each="course :  ${courses}">
+                <input type="radio" name="courseId" th:value="${course.courseId}"/>
+                <th:block th:text="${course.name}"></th:block>
+            </li>
+        </ul>
+        <br/>
+        <input type="submit" value="Add Student">
+    </form>
+
+</main>
+</body>
+</html>
