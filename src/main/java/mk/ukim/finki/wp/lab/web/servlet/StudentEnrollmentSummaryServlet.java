@@ -1,4 +1,4 @@
-package mk.ukim.finki.wp.lab.web;
+package mk.ukim.finki.wp.lab.web.servlet;
 
 import mk.ukim.finki.wp.lab.model.Course;
 import mk.ukim.finki.wp.lab.model.Student;
@@ -13,16 +13,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
-@WebServlet(name = "create-student-servlet", urlPatterns = "/createStudent")
-public class CreateStudentServlet extends HttpServlet {
-
+@WebServlet(name = "student-enrollment-summary-servlet", urlPatterns = "/StudentEnrollmentSummary")
+public class StudentEnrollmentSummaryServlet extends HttpServlet {
     private final SpringTemplateEngine springTemplateEngine;
     private final StudentService studentService;
     private final CourseService courseService;
 
-    public CreateStudentServlet(SpringTemplateEngine springTemplateEngine, StudentService studentService,
-                                CourseService courseService) {
+    public StudentEnrollmentSummaryServlet(SpringTemplateEngine springTemplateEngine, StudentService studentService,
+                                           CourseService courseService) {
         this.studentService = studentService;
         this.springTemplateEngine = springTemplateEngine;
         this.courseService = courseService;
@@ -31,17 +31,22 @@ public class CreateStudentServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         WebContext context = new WebContext(req,resp,req.getServletContext());
-        this.springTemplateEngine.process("createStudent.html", context, resp.getWriter());
+        Long courseId = null;
+        try {
+            courseId = Long.parseLong(req.getSession().getAttribute("courseId").toString());
+        } catch (Exception e) {
+            resp.sendRedirect("/listCourses");
+            return;
+        }
+        Course course = courseService.findById(courseId);
+        List<Student> students = courseService.listStudentsByCourse(courseId);
+        context.setVariable("courseName", course.getName());
+        context.setVariable("students", students);
+        this.springTemplateEngine.process("studentEnrollmentSummary.html", context, resp.getWriter());
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String username = req.getParameter("username");
-        String password = req.getParameter("password");
-        String name = req.getParameter("name");
-        String surname = req.getParameter("surname");
-        studentService.save(username, password, name, surname);
-
-        resp.sendRedirect("/addStudent");
+        super.doPost(req, resp);
     }
 }

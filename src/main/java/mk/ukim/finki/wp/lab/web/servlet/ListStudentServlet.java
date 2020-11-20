@@ -1,4 +1,4 @@
-package mk.ukim.finki.wp.lab.web;
+package mk.ukim.finki.wp.lab.web.servlet;
 
 import mk.ukim.finki.wp.lab.service.CourseService;
 import org.thymeleaf.context.WebContext;
@@ -33,8 +33,7 @@ public class ListStudentServlet extends HttpServlet {
             return;
         }
         context.setVariable("courseId", courseId);
-        context.setVariable("students", courseService.listStudentsByCourse(courseId));
-
+        context.setVariable("students", this.courseService.listStudentsByCourse(courseId));
         this.springTemplateEngine.process("listStudents.html", context, resp.getWriter());
     }
 

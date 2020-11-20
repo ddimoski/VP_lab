@@ -17,15 +17,21 @@ public class CourseRepository {
     }
 
     public Course findById(Long courseId) {
-        return DataHolder.courses.stream().filter(course -> course.getCourseId() == courseId).findFirst().get();
+        return DataHolder.courses.stream().filter(course -> course.getCourseId().equals(courseId)).findFirst().get();
     }
 
     public List<Student> findAllStudentsByCourse(Long courseId) {
-        return DataHolder.courses.stream().filter(course -> course.getCourseId() == courseId).findFirst().get().getStudents();
+        return DataHolder.courses.stream().filter(course -> course.getCourseId().equals(courseId)).findFirst().get().getStudents();
     }
 
     public Course addStudentToCourse(Student student, Course course) {
         findById(course.getCourseId()).addStudent(student);
         return findById(course.getCourseId());
+    }
+
+    public Course save(Course course) {
+        DataHolder.courses.removeIf(x -> x.getName().equals(course.getName()));
+        DataHolder.courses.add(course);
+        return course;
     }
 }

@@ -24,6 +24,8 @@
             <li th:each="course :  ${courses}">
                 <input type="radio" name="courseId" th:value="${course.courseId}"/>
                 <th:block th:text="${course.name}"></th:block>
+                <a type="button" class="btn btn-primary" href="/courses/add?name=Hm?description=idk?teacherId=9">Edit</a>
+                <a type="button" class="btn btn-primary" th:href="@{'/courses/delete{id}' (id=${course.courseId})}">Delete</a>
             </li>
         </ul>
         <br/>
