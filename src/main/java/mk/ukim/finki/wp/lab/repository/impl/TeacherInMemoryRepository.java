@@ -1,4 +1,4 @@
-package mk.ukim.finki.wp.lab.repository;
+package mk.ukim.finki.wp.lab.repository.impl;
 
 import mk.ukim.finki.wp.lab.bootstrap.DataHolder;
 import mk.ukim.finki.wp.lab.model.Teacher;
@@ -8,7 +8,7 @@ import javax.xml.crypto.Data;
 import java.util.List;
 
 @Repository
-public class TeacherRepository {
+public class TeacherInMemoryRepository {
     public List<Teacher> findAll() {
         return DataHolder.teachers;
     }

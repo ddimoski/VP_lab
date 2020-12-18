@@ -11,6 +11,10 @@
         ul {
             list-style-type: none;
         }
+
+        form {
+            display: inline;
+        }
     </style>
 </head>
 <body>
@@ -19,13 +23,28 @@
 </header>
 <main>
 
+    <ul th:each="course :  ${courses}">
+        <li >
+<!--            <input type="radio" name="courseId" th:value="${course.courseId}"/>-->
+            <th:block th:text="${course.name}"></th:block>
+
+            <form th:method="PUT" th:action="@{'/courses/edit-form/{id}' (id=${course.id})}">
+                <button type="submit" class="btn btn-sm btn-danger">Edit</button>
+            </form>
+
+            <form th:method="DELETE" th:action="@{'/courses/delete/{id}' (id=${course.id})}">
+                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+            </form>
+        </li>
+    </ul>
+
+    <hr>
+    <h3>Choose a course to add a student</h3>
     <form th:method="POST" th:action="@{/listCourses}">
         <ul>
             <li th:each="course :  ${courses}">
-                <input type="radio" name="courseId" th:value="${course.courseId}"/>
+                <input type="radio" name="courseId" th:value="${course.id}"/>
                 <th:block th:text="${course.name}"></th:block>
-                <a type="button" class="btn btn-primary" href="/courses/add?name=Hm?description=idk?teacherId=9">Edit</a>
-                <a type="button" class="btn btn-primary" th:href="@{'/courses/delete{id}' (id=${course.courseId})}">Delete</a>
             </li>
         </ul>
         <br/>

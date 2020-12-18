@@ -1,32 +1,30 @@
-package mk.ukim.finki.wp.lab.repository;
+package mk.ukim.finki.wp.lab.repository.impl;
 
 import mk.ukim.finki.wp.lab.bootstrap.DataHolder;
 import mk.ukim.finki.wp.lab.model.Course;
 import mk.ukim.finki.wp.lab.model.Student;
 import org.springframework.stereotype.Repository;
 
-import javax.xml.crypto.Data;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
-public class CourseRepository {
+public class CourseInMemoryRepository {
 
     public List<Course> findAllCourses() {
         return DataHolder.courses;
     }
 
     public Course findById(Long courseId) {
-        return DataHolder.courses.stream().filter(course -> course.getCourseId().equals(courseId)).findFirst().get();
+        return DataHolder.courses.stream().filter(course -> course.getId().equals(courseId)).findFirst().get();
     }
 
     public List<Student> findAllStudentsByCourse(Long courseId) {
-        return DataHolder.courses.stream().filter(course -> course.getCourseId().equals(courseId)).findFirst().get().getStudents();
+        return DataHolder.courses.stream().filter(course -> course.getId().equals(courseId)).findFirst().get().getStudents();
     }
 
     public Course addStudentToCourse(Student student, Course course) {
-        findById(course.getCourseId()).addStudent(student);
-        return findById(course.getCourseId());
+        findById(course.getId()).addStudent(student);
+        return findById(course.getId());
     }
 
     public Course save(Course course) {

@@ -21,11 +21,18 @@ public class CourseController {
 
     @GetMapping
     public String getCoursesPage(@RequestParam(required = false) String error, Model model) {
+        if(error != null && !error.isEmpty()) {
+            model.addAttribute("hasError", true);
+            model.addAttribute("error", error);
+        }
+        List<Course> products = this.courseService.listALl();
+        model.addAttribute("courses", products);
+
         return "redirect:/listCourses";
     }
 
     @PostMapping("courses/add")
-    public /*@ResponseBody*/ String saveCourse(@RequestParam String name, @RequestParam String description, @RequestParam Long teacherId) {
+    public String saveCourse(@RequestParam String name, @RequestParam String description, @RequestParam Long teacherId) {
         courseService.save(name, description, teacherId);
         return "redirect:/listCourses";
     }
@@ -38,10 +45,16 @@ public class CourseController {
 
     @GetMapping("/courses/edit-form/{id}")
     public String getEditCoursePage(@PathVariable Long id, Model model) {
-        Course course = courseService.findById(id);
-        Teacher teacher = course.getTeacher();
-        model.addAttribute("courseId", course.getCourseId());
-        model.addAttribute("teacherId", teacher.getId());
+        try {
+            Course course = courseService.findById(id);
+            Teacher teacher = course.getTeacher();
+            model.addAttribute("courseId", course.getId());
+            model.addAttribute("teacherId", teacher.getId());
+            return "add-course";
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         return "redirect:/listCourses";
     }
 }
