@@ -3,6 +3,7 @@ package mk.ukim.finki.wp.lab.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -19,6 +20,9 @@ public class Student {
     private String name;
 
     private String surname;
+
+//    @OneToMany(fetch = FetchType.EAGER)
+//    private List<Grade> grade;
 
     public Student(String username, String password, String name, String surname) {
         this.username = username;

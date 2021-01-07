@@ -1,8 +1,10 @@
 package mk.ukim.finki.wp.lab.web.servlet;
 
 import mk.ukim.finki.wp.lab.model.Course;
+import mk.ukim.finki.wp.lab.model.Grade;
 import mk.ukim.finki.wp.lab.model.Student;
 import mk.ukim.finki.wp.lab.service.CourseService;
+import mk.ukim.finki.wp.lab.service.GradeService;
 import mk.ukim.finki.wp.lab.service.StudentService;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -19,13 +21,15 @@ import java.util.List;
 public class StudentEnrollmentSummaryServlet extends HttpServlet {
     private final SpringTemplateEngine springTemplateEngine;
     private final StudentService studentService;
+    private final GradeService gradeService;
     private final CourseService courseService;
 
     public StudentEnrollmentSummaryServlet(SpringTemplateEngine springTemplateEngine, StudentService studentService,
-                                           CourseService courseService) {
+                                           CourseService courseService, GradeService gradeService) {
         this.studentService = studentService;
         this.springTemplateEngine = springTemplateEngine;
         this.courseService = courseService;
+        this.gradeService = gradeService;
     }
 
     @Override
@@ -40,6 +44,8 @@ public class StudentEnrollmentSummaryServlet extends HttpServlet {
         }
         Course course = courseService.findById(courseId);
         List<Student> students = courseService.listStudentsByCourse(courseId);
+        List<Grade> grades = gradeService.findAllByCourse(course.getId());
+        context.setVariable("grades", grades);
         context.setVariable("courseName", course.getName());
         context.setVariable("students", students);
         this.springTemplateEngine.process("studentEnrollmentSummary.html", context, resp.getWriter());

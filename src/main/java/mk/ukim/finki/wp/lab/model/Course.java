@@ -17,11 +17,14 @@ public class Course {
 
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Student> students;
 
     @OneToOne(fetch = FetchType.EAGER)
     private Teacher teacher;
+
+    @Enumerated(EnumType.STRING)
+    private Type type;
 
     //TODO: add students in the constructor or add a method for adding students to the list
     public Course(String name, String description, List<Student> students, Teacher teacher) {

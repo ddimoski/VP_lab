@@ -42,6 +42,8 @@ public class CreateStudentServlet extends HttpServlet {
         String surname = req.getParameter("surname");
         studentService.save(username, password, name, surname);
 
+        Long courseId = Long.parseLong(req.getSession().getAttribute("courseId").toString());
+        courseService.addStudentInCourse(username, courseId);
         resp.sendRedirect("/addStudent");
     }
 }
