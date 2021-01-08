@@ -29,11 +29,11 @@
             <th:block th:text="${course.name}"></th:block>
 
             <form th:method="PUT" th:action="@{'/courses/edit-form/{id}' (id=${course.id})}">
-                <button type="submit" class="btn btn-sm btn-danger">Edit</button>
+                <th:block th:if="${#request.getRemoteUser() != null}"> <button type="submit" class="btn btn-sm btn-danger">Edit</button></th:block>
             </form>
 
             <form th:method="DELETE" th:action="@{'/courses/delete/{id}' (id=${course.id})}">
-                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                <th:block th:if="${#request.getRemoteUser() != null}"><button type="submit" class="btn btn-sm btn-danger">Delete</button> </th:block>
             </form>
         </li>
     </ul>
@@ -48,7 +48,7 @@
             </li>
         </ul>
         <br/>
-        <input type="submit" value="Add Student">
+        <th:block th:if="${#request.getRemoteUser() != null}"><input type="submit" value="Add Student"></th:block>
     </form>
 
 </main>

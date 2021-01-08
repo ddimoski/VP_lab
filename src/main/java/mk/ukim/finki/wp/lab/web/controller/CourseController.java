@@ -3,7 +3,6 @@ package mk.ukim.finki.wp.lab.web.controller;
 import mk.ukim.finki.wp.lab.model.Course;
 import mk.ukim.finki.wp.lab.model.Teacher;
 import mk.ukim.finki.wp.lab.service.CourseService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,16 +18,16 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    @GetMapping
+    @GetMapping("/courses")
     public String getCoursesPage(@RequestParam(required = false) String error, Model model) {
         if(error != null && !error.isEmpty()) {
             model.addAttribute("hasError", true);
             model.addAttribute("error", error);
         }
-        List<Course> products = this.courseService.listALl();
-        model.addAttribute("courses", products);
-
-        return "redirect:/listCourses";
+        List<Course> courses = courseService.listALl();
+        model.addAttribute("courses", courses);
+        model.addAttribute("bodyContent", "courses");
+        return "listCourses.html";
     }
 
     @PostMapping("courses/add")
