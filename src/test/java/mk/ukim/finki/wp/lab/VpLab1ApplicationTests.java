@@ -34,7 +34,10 @@ class VpLab1ApplicationTests {
         MockHttpServletRequestBuilder coursesPageRequest = MockMvcRequestBuilders.get("/courses");
         this.mockMvc.perform(coursesPageRequest)
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isMovedTemporarily())
-                .andExpect(MockMvcResultMatchers.model().attributeExists("courses"));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.model().attributeExists("courses"))
+                .andExpect(MockMvcResultMatchers.model().attribute("bodyContent", "courses"))
+                .andExpect(MockMvcResultMatchers.view().name("listCourses.html"));
+
     }
 }

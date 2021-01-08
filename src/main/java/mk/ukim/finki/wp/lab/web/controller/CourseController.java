@@ -1,6 +1,7 @@
 package mk.ukim.finki.wp.lab.web.controller;
 
 import mk.ukim.finki.wp.lab.model.Course;
+import mk.ukim.finki.wp.lab.model.Student;
 import mk.ukim.finki.wp.lab.model.Teacher;
 import mk.ukim.finki.wp.lab.service.CourseService;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@RequestMapping("/courses")
 public class CourseController {
 
     private final CourseService courseService;
@@ -18,7 +20,7 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    @GetMapping("/courses")
+    @GetMapping
     public String getCoursesPage(@RequestParam(required = false) String error, Model model) {
         if(error != null && !error.isEmpty()) {
             model.addAttribute("hasError", true);
@@ -30,7 +32,14 @@ public class CourseController {
         return "listCourses.html";
     }
 
-    @PostMapping("courses/add")
+    @PostMapping("/open-course/{id}")
+    public String openCourse(@PathVariable Long id, @RequestParam(required = false) String error, Model model){
+        List<Student> students = courseService.listStudentsByCourse(id);
+        model.addAttribute("students", students);
+        return "redirect:/addStudent/{id}";
+    }
+
+    @PostMapping("/add")
     public String saveCourse(@RequestParam String name, @RequestParam String description, @RequestParam Long teacherId) {
         courseService.save(name, description, teacherId);
         return "redirect:/listCourses";
@@ -39,7 +48,7 @@ public class CourseController {
     @DeleteMapping("courses/delete/{id}")
     public String deleteCourse(@PathVariable Long id) {
         courseService.delete(id);
-        return "redirect:/listCourses";
+        return "courses.html";
     }
 
     @GetMapping("/courses/edit-form/{id}")

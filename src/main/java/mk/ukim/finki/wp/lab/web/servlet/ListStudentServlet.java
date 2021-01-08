@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "student-list-servlet", urlPatterns = "/addStudent")
+@WebServlet(name = "student-list-servlet", urlPatterns = "/addStudent1")
 public class ListStudentServlet extends HttpServlet {
 
     private final CourseService courseService;
